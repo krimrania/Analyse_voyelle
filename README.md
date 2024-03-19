@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # compteur_voyelle
 
 A new Flutter project.
@@ -14,3 +15,7 @@ A few resources to get you started if this is your first Flutter project:
 For help getting started with Flutter development, view the
 [online documentation](https://docs.flutter.dev/), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
+=======
+# Analyse_voyelle
+Analyse_voyelle
+>>>>>>> 6ea82060845dab2cda0b3be8a66f5202783fd7c9
