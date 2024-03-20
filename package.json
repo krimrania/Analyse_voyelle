@@ -1,0 +1,29 @@
+{
+  "name": "compteur_voyelle",
+  "version": "1.0.0",
+  "description": "<<<<<<< HEAD\r # compteur_voyelle",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib",
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "(github.com/krimrania/Analyse_voyelle)"
+  },
+  "keywords": [
+    "a",
+    "y",
+    "d",
+    "a"
+  ],
+  "author": " (John Doe)",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "express": "^4.18.3"
+  }
+}

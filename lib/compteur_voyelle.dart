@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'dart:async'; // Importez ce package pour utiliser Timer
 
-void main() {
-  runApp(const MyApp());
+
+void main()=> runApp(const MyApp());
+
+
+class SystemFonts {
+  static void addFont(String s) {}
 }
 
 class MyApp extends StatelessWidget {
@@ -13,11 +17,16 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primaryColor: Color.fromARGB(255, 35, 136, 238), // Couleur principale
-        colorScheme: ColorScheme.fromSwatch().copyWith(secondary: Color.fromARGB(255, 5, 7, 8)), // Couleur d'accentuation
+        primaryColor: Color.fromARGB(255, 57, 117, 238), // Couleur principale
+        colorScheme: ColorScheme.fromSwatch().copyWith(
+          secondary: Color.fromARGB(255, 5, 7, 8)), // Couleur d'accentuation
         // Autres personnalisations de thème...
       ),
-      home: VowelConsonantCounter(),
+     initialRoute: '/',
+      routes: {
+        '/': (context) => VowelConsonantCounter(),
+        // Ajoutez d'autres routes ici pour les écrans supplémentaires
+      },
     );
   }
 }
@@ -41,22 +50,32 @@ class _VowelConsonantCounterState extends State<VowelConsonantCounter> {
 
   // Fonction pour compter les voyelles et les consonnes dans le texte donné
   void countVowelsAndConsonants(String text) {
-    int cCount = 0;
+    // Réinitialiser les compteurs à zéro
+    setState(() {
+      vowelCountMap = {
+        'a': 0,
+        'e': 0,
+        'i': 0,
+        'o': 0,
+        'u': 0,
+        'y': 0,
+      };
+      consonantCount = 0;
+    });
+
+    // Effectuer l'analyse du nouveau mot
     for (int i = 0; i < text.length; i++) {
       String char = text[i].toLowerCase();
       if (RegExp(r'[aeiouy]').hasMatch(char)) {
-        if (vowelCountMap.containsKey(char)) {
+        setState(() {
           vowelCountMap[char] = (vowelCountMap[char] ?? 0) + 1;
-        } else {
-          vowelCountMap[char] = 1;
-        }
+        });
       } else if (RegExp(r'[a-z]').hasMatch(char)) {
-        cCount++;
+        setState(() {
+          consonantCount++;
+        });
       }
     }
-    setState(() {
-      consonantCount = cCount;
-    });
   }
 
   // Fonction pour obtenir la couleur de la voyelle spécifiée
@@ -73,7 +92,7 @@ class _VowelConsonantCounterState extends State<VowelConsonantCounter> {
       case 'u':
         return Color.fromARGB(255, 19, 180, 62);
       case 'y':
-        return Color.fromARGB(255, 155, 238, 228);
+        return Color.fromARGB(255, 23, 203, 182);
       default:
         return Colors.black;
     }
@@ -155,25 +174,41 @@ class _VowelConsonantCounterState extends State<VowelConsonantCounter> {
               ),
             ),
             
-            const SizedBox(height: 20.0), // Espace entre le texte et la liste des voyelles
+            const SizedBox(height: 10.0), // Espace entre le texte et la liste des voyelles
             Expanded(
-              child: ListView.builder(
-                itemCount: vowelCountMap.length,
-                itemBuilder: (context, index) {
-                  String vowel = vowelCountMap.keys.elementAt(index);
-                  int count = vowelCountMap[vowel] ?? 0;
-                  return Container(
-                    margin: const EdgeInsets.symmetric(vertical: 4.0),
-                    decoration: BoxDecoration(
-                      color: _getVowelColor(vowel), // Couleur de fond basée sur la voyelle
-                      borderRadius: BorderRadius.circular(8.0),
-                    ),
-                    child: ListTile(
-                      title: Text(
-                        '$vowel : $count Occurrence', // Texte avec l'occurrence
-                        style: const TextStyle(
-                          color: Colors.white, // Couleur du texte
-                          fontFamily: 'French Script MT', // Police d'écriture
+  child: ListView.builder(
+    itemCount: vowelCountMap.length,
+    itemBuilder: (context, index) {
+      String vowel = vowelCountMap.keys.elementAt(index);
+      int count = vowelCountMap[vowel] ?? 0;
+      return Container(
+        margin: const EdgeInsets.symmetric(vertical: 4.0),
+        decoration: BoxDecoration(
+          color: _getVowelColor(vowel), // Couleur de fond basée sur la voyelle
+          borderRadius: BorderRadius.circular(8.0),
+        ),
+         child: ListTile(
+                      title: RichText(
+                        text: TextSpan(
+                          children: [
+                            TextSpan(
+                              text: '$vowel : ',
+                              style: const TextStyle(
+                                color: Colors.white, // Couleur du texte
+                                fontFamily: 'Damion', // Police d'écriture
+                                fontSize: 28, // Taille du texte
+                                
+                              ),
+                            ),
+                            TextSpan(
+                              text: '$count Occurrence', // Texte avec l'occurrence
+                              style: const TextStyle(
+                                color: Colors.white, // Couleur du texte
+                                fontFamily: 'Damion', // Police d'écriture pour l'occurrence
+                                fontSize: 16, // Taille du texte pour l'occurrence
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ),
@@ -191,7 +226,12 @@ class _VowelConsonantCounterState extends State<VowelConsonantCounter> {
               child: ListTile(
                 title: Text(
                   'Consonnes : $consonantCount', // Afficher le nombre de consonnes
-                  style: const TextStyle(color: Colors.white), // Couleur du texte
+                  style: const TextStyle(
+                                color: Colors.white, // Couleur du texte
+                                fontFamily: 'Damion', // Police d'écriture
+                                fontSize: 28, // Taille du texte
+                                
+                              ),
                 ),
               ),
             ),
